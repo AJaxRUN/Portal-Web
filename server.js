@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const socket = require('socket.io');
 const io = socket(server);
 
-const users = [];
+let users = [];
 const port = 8080;
 
 app.use(express.static(__dirname));
