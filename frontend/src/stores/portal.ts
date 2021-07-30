@@ -12,8 +12,7 @@ class PortalStore {
             streams: observable,
             myMediaStream: observable,
             addPeer: action,
-            addStream: action,
-            streamAsArray: computed
+            addStream: action
         });
     }
 
@@ -23,9 +22,5 @@ class PortalStore {
 
     addStream(socketUid: string, stream: MediaStream) {
         this.streams.set(socketUid, stream);
-    }
-
-    get streamAsArray() {
-        return this.streams.values();
     }
 }
