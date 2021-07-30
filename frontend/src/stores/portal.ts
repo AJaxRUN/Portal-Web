@@ -12,7 +12,9 @@ class PortalStore {
             streams: observable,
             myMediaStream: observable,
             addPeer: action,
-            addStream: action
+            deletePeer: action,
+            addStream: action,
+            deleteStream: action
         });
     }
 
@@ -20,7 +22,16 @@ class PortalStore {
         this.peerObjects.set(socketUid, peer);
     }
 
+    deletePeer(socketUid: string) {
+        this.peerObjects.delete(socketUid);
+    }
+
     addStream(socketUid: string, stream: MediaStream) {
         this.streams.set(socketUid, stream);
     }
+
+    deleteStream(socketUid: string) {
+        this.streams.delete(socketUid);
+    }
+
 }
