@@ -1,24 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { VideoComponent } from './components/video/video';
+
+async function getMediaStream(constraints: MediaStreamConstraints, setMediaStreamCallback: (mediaStream: MediaStream) => void) {
+  const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+  setMediaStreamCallback(mediaStream);
+}
 
 function App() {
+  const [myMediaStream, setMyMediaStream] = useState<MediaStream|undefined>();
+
+  useEffect(() => {
+    getMediaStream({video: true, audio: false}, setMyMediaStream);
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <VideoComponent mediaStream={myMediaStream} mediaType='video' />
     </div>
   );
 }
