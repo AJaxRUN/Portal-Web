@@ -1,28 +1,28 @@
-import React, { createRef, useEffect, RefObject } from 'react';
+import React, { createRef, useEffect, RefObject, VoidFunctionComponent } from 'react';
+import { MediaType } from '../../common/types';
 
 import avatarImage from './avatar.png';
 import './video.css';
 
-type MediaType = 'video' | 'only-audio' | 'none';
 
 interface Props {
     mediaStream?: MediaStream;
     mediaType?: MediaType;
 }
 
-export function VideoComponent({mediaStream, mediaType}: Props) {
+export const VideoComponent: VoidFunctionComponent<Props> = (props) => {
     const ref = createRef<HTMLVideoElement|HTMLAudioElement>();
 
     useEffect(() => {
-        if(mediaStream && ref.current) {
+        if(props.mediaStream && ref.current) {
             console.log('Playing media');
-            ref.current.srcObject = mediaStream;
+            ref.current.srcObject = props.mediaStream;
             ref.current.play();
         }
-    }, [mediaStream, ref.current]);
+    }, [props.mediaStream, ref]);
 
 
-    switch(mediaType) {
+    switch(props.mediaType) {
         case 'video':
             return <video className="video-element" ref={ref as RefObject<HTMLVideoElement>} />;
         case 'only-audio':

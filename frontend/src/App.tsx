@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { VideoComponent } from './components/video/video';
+import { StreamObject } from './common/types';
+import { LayoutComponent } from './components/layout/layout';
 
-async function getMediaStream(constraints: MediaStreamConstraints, setMediaStreamCallback: (mediaStream: MediaStream) => void) {
+async function getMediaStream(constraints: MediaStreamConstraints, setMediaStreamsCallback: (mediaStream: Array<StreamObject>) => void) {
   const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-  setMediaStreamCallback(mediaStream);
+  const streamObjects: Array<StreamObject> = [{stream: mediaStream, type: 'video'}, {stream: mediaStream, type: 'video'}, {type: 'none'}];
+  setMediaStreamsCallback(streamObjects);
 }
 
 function App() {
-  const [myMediaStream, setMyMediaStream] = useState<MediaStream|undefined>();
+  const [mediaStreams, setMediaStreams] = useState<Array<StreamObject>>([]);
 
   useEffect(() => {
-    getMediaStream({video: true, audio: false}, setMyMediaStream);
+    getMediaStream({video: true, audio: false}, setMediaStreams);
   }, []);
 
   return (
-    <div className="App">
-      <VideoComponent mediaStream={myMediaStream} mediaType='video' />
+    <div>
+      <LayoutComponent streams={mediaStreams} noOfParticipants={4} />
     </div>
   );
 }
