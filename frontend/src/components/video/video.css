@@ -1,0 +1,4 @@
+.video-element {
+    /* To prevent users from enabling controls for the video */
+    pointer-events: none;
+}

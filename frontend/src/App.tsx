@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { StreamObject } from './common/types';
+import { LayoutComponent } from './components/layout/layout';
+
+async function getMediaStream(constraints: MediaStreamConstraints, setMediaStreamsCallback: (mediaStream: Array<StreamObject>) => void) {
+  const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+  const streamObjects: Array<StreamObject> = [{stream: mediaStream, type: 'video'}, {stream: mediaStream, type: 'video'}, {type: 'none'}];
+  setMediaStreamsCallback(streamObjects);
+}
 
 function App() {
+  const [mediaStreams, setMediaStreams] = useState<Array<StreamObject>>([]);
+
+  useEffect(() => {
+    getMediaStream({video: true, audio: false}, setMediaStreams);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <LayoutComponent streams={mediaStreams} noOfParticipants={4} />
     </div>
   );
 }
